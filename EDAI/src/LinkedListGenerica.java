@@ -16,10 +16,173 @@ public class LinkedListGenerica<E> {
     public LinkedListGenerica() {
     }
 
-    public LinkedListGenerica(Node<E> head, Node<E> tail, int size) {
+    public LinkedListGenerica(Node<E> head, Node<E> tail) {
         this.head = head;
         this.tail = tail;
-        this.size = size;
+        size = 1;
+    }
+
+    public void addAll(LinkedListGenerica list) {
+        Node currentNode = list.head;
+        if (list.head != null) {
+            while (currentNode != null) {
+                this.aniadirFinal((E) currentNode.getDato());
+                currentNode = (Node) currentNode.getDato();
+            }
+        }
+    }
+
+    public void aniadirFinal(E ultimo) {
+        Node<E> ultimoNodo = new Node<E>(ultimo);
+
+        if (tail == null) {
+            head = ultimoNodo;
+            tail = ultimoNodo;
+            return;
+        }
+        tail.setNext(ultimoNodo);
+        tail = ultimoNodo;
+        size++;
+    }
+
+    public void aniadirInicio(E primero) {
+        Node<E> primeroNodo = new Node<>(primero);
+
+        if (tail == null) {
+            head = primeroNodo;
+            tail = primeroNodo;
+            return;
+        }
+
+        primeroNodo.setNext(head);
+        head = primeroNodo;
+        size++;
+    }
+
+    public void aniadirEnPosicion(int posicion, E nuevo) {
+        size++;
+        Node<E> nodoActual = head;
+        Node<E> nuevoNodo = new Node<>(nuevo);
+
+        if (tail == null) {
+            head = nuevoNodo;
+            tail = nuevoNodo;
+            return;
+        }
+
+        if (posicion == 0) {
+            aniadirInicio(nuevo);
+            return;
+        }
+
+        for (int i = 0; i < posicion - 1; i++) {
+            if (nodoActual == null) {
+                return; // Evita Null
+            }
+            nodoActual = nodoActual.getNext();
+        }
+
+        if (nodoActual != null) {
+            nuevoNodo.setNext(nodoActual.getNext());
+            nodoActual.setNext(nuevoNodo);
+            if (nuevoNodo.getNext() == null) {
+                tail = nuevoNodo;
+            }
+        }
+    }
+
+    public void eliminarInicio() {
+        if (head != null) {
+            head = head.getNext();
+            size--;
+        }
+    }
+
+    public void eliminarFinal() {
+        if (head == null) {
+            return;
+        }
+        size--;
+
+        if (head == tail) {
+            head = null;
+            tail = null;
+            return;
+        }
+
+        Node<E> nodoActual = head;
+        while (nodoActual.getNext() != tail) {
+            nodoActual = nodoActual.getNext();
+        }
+        nodoActual.setNext(null);
+        tail = nodoActual;
+    }
+
+    public void imprimirLista() {
+        Node<E> nodoActual = head;
+        while (nodoActual != null) {
+            System.out.println(nodoActual.getDato().toString());
+            nodoActual = nodoActual.getNext();
+        }
+    }
+
+    public void removeData(E data) {
+        Node<E> currentNode = head;
+        Node<E> previousNode = null;
+
+        if (currentNode == null) {
+            return;
+        }
+
+        size--;
+        if (head.getDato().equals(data)) {
+            head = head.getNext();
+            return;
+        }
+
+        while (currentNode != null) {
+            if (currentNode.getNext().getDato().equals(data)) {
+                previousNode = currentNode;
+                previousNode.setNext(currentNode.getNext().getNext());
+                break;
+            }
+            currentNode = currentNode.getNext();
+        }
+    }
+
+    public boolean contains(E data) {
+        Node<E> currentNode = head;
+        boolean contains = false;
+
+        if (head.getDato().equals(data) || tail.getDato().equals(data)) {
+            return true;
+        } else {
+            while (currentNode != null) {
+                if (currentNode.getDato().equals(data)) {
+                    contains = true;
+                    break;
+                }
+                currentNode = currentNode.getNext();
+            }
+        }
+        return contains;
+    }
+
+    public void updateData(E old, E now) {
+        Node<E> nodoActual = head;
+
+        while (nodoActual != null) {
+            if (nodoActual.getDato().equals(old)) {
+                nodoActual.setDato(now);
+                break;
+            }
+            nodoActual = nodoActual.getNext();
+        }
+    }
+
+    public void makeVoid() {
+        head = null;
+        tail = null;
     }
 
     public void imprimir() {
