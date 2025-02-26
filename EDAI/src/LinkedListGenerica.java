@@ -7,11 +7,29 @@
  *
  * @author estudiante
  */
-public class LinkedList<E> {
+public class LinkedListGenerica<E> {
 
     private Node<E> head;
     private Node<E> tail;
     private int size;
+
+    public LinkedListGenerica() {
+    }
+
+    public LinkedListGenerica(Node<E> head, Node<E> tail, int size) {
+        this.head = head;
+        this.tail = tail;
+        this.size = size;
+    }
+
+    public void imprimir() {
+        Node<E> aux;
+        aux = head;
+        while (head != null) {
+            System.out.println("Dato: " + aux.getDato());
+            aux = aux.getNext();
+        }
+    }
 
     /**
      * @return the head
@@ -54,6 +72,5 @@ public class LinkedList<E> {
     public void setSize(int size) {
         this.size = size;
     }
-    
 
 }
